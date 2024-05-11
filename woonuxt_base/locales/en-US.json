@@ -107,7 +107,8 @@
       "discount": "Discount",
       "giftCards": "Gift Cards",
       "searchProducts": "Search Products...",
-      "couponCode": "Coupon Code"
+      "couponCode": "Coupon Code",
+      "NotAuthorized": "Enjoy your order!"
     },
     "billing": {
       "billing": "Billing",

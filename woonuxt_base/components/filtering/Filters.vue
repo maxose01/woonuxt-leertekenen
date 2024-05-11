@@ -112,7 +112,7 @@ const { hideCategories } = defineProps({ hideCategories: { type: Boolean, defaul
 
   input[type='checkbox']:checked + label,
   input[type='radio']:checked + label {
-    @apply text-gray-800 hover:text-primary-dark;
+    @apply text-gray-800;
   }
 
   input[type='checkbox']:checked,

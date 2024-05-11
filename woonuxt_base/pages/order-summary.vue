@@ -153,7 +153,11 @@ const refreshOrder = async () => {
           </div>
         </div>
       </div>
-      <div v-else-if="errorMessage" class="w-full text-center flex flex-col items-center justify-center gap-4 flex-1">
+      <div v-else-if="errorMessage && errorMessage == 'Not authorized to access this order'" class="w-full text-center flex flex-col items-center justify-center gap-4 flex-1">
+        <Icon name="bxs:party" size="96" class="text-gray-700" />
+        <h1 class="text-xl font-semibold">{{ $t('messages.shop.NotAuthorized') }}</h1>
+      </div>
+      <div v-else-if="errorMessage && errorMessage != 'Not authorized to access this order'" class="w-full text-center flex flex-col items-center justify-center gap-4 flex-1">
         <Icon name="ion:sad-outline" size="96" class="text-gray-700" />
         <h1 class="text-xl font-semibold">Error</h1>
         <div v-if="errorMessage" class="text-sm text-red-500" v-html="errorMessage" />
