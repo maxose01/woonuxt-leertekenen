@@ -1,7 +1,7 @@
 mutation Checkout(
   $billing: CustomerAddressInput = {}
   $metaData: [MetaDataInput] = { key: "", value: "" }
-  $paymentMethod: String = "stripe"
+  $paymentMethod: String = "mollie_wc_gateway_ideal"
   $shipping: CustomerAddressInput = {}
   $customerNote: String = ""
   $shipToDifferentAddress: Boolean = false

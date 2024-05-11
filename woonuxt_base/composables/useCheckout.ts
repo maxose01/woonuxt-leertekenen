@@ -122,7 +122,6 @@ export function useCheckout() {
       }
     } catch (error: any) {
       isProcessingOrder.value = false;
-
       const errorMessage = error?.gqlErrors?.[0].message;
 
       if (errorMessage?.includes('An account is already registered with your email address')) {
@@ -130,7 +129,8 @@ export function useCheckout() {
         return null;
       }
 
-      alert(errorMessage);
+      alert(errorMessage + ' ' + error);
+      console.log('errorMessage', errorMessage, orderInput.value.paymentMethod.id);
       return null;
     }
 
