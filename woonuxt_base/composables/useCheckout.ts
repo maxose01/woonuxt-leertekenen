@@ -75,6 +75,8 @@ export function useCheckout() {
         isPaid,
       };
 
+      console.log(checkoutPayload);
+
       // Create account
       if (orderInput.value.createAccount) {
         checkoutPayload.account = { username, password } as CreateAccountInput;
