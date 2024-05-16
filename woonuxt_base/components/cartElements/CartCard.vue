@@ -53,7 +53,7 @@ const salePercentage = computed(() => {
       <div class="inline-flex gap-2 flex-col items-end">
         <QuantityInput :item />
         <div class="text-xs text-gray-400 group-hover:text-gray-700 flex leading-none items-center">
-          <button class="mr-2 pr-2 border-r" @click="moveToWishList" type="button">Move to Wishlist</button>
+          <button class="mr-2 pr-2 border-r" @click="moveToWishList" type="button">{{$t("messages.shop.wishlist")}}</button>
           <button title="Remove Item" aria-label="Remove Item" @click="removeItem" type="button" class="flex items-center gap-1 hover:text-red-500 cursor-pointer">
             <Icon name="ion:trash" class="hidden md:inline-block" size="12" />
           </button>
