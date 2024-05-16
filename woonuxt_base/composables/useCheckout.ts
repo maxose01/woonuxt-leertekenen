@@ -1,5 +1,6 @@
 import type { CheckoutInput, UpdateCustomerInput, CreateAccountInput } from '#gql';
-
+import {useContactStore} from "../../../../stores/useContactStore";
+import {useFetch} from "#app";
 export function useCheckout() {
   const orderInput = useState<any>('orderInput', () => {
     return {
@@ -50,6 +51,22 @@ export function useCheckout() {
     });
   }
 
+  function openMollieWindow(redirectUrl: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const width = 750;
+      const height = 750;
+      const left = window.innerWidth / 2 - width / 2;
+      const top = window.innerHeight / 2 - height / 2 + 80;
+      const mollieWindow = window.open(redirectUrl, '', `width=${width},height=${height},top=${top},left=${left}`);
+      const timer = setInterval(() => {
+        if (mollieWindow?.closed) {
+          clearInterval(timer);
+          resolve(true);
+        }
+      }, 500);
+    });
+  }
+
   const proccessCheckout = async (isPaid = false) => {
     const { loginUser } = useAuth();
     const router = useRouter();
@@ -92,6 +109,7 @@ export function useCheckout() {
       const orderId = checkout?.order?.databaseId;
       const orderKey = checkout?.order?.orderKey;
       const isPayPal = orderInput.value.paymentMethod.id === 'paypal';
+      const isMollie = orderInput.value.paymentMethod.id === 'mollie_wc_gateway_ideal' || orderInput.value.paymentMethod.id === 'mollie_wc_gateway_bancontact';
 
       // PayPal redirect
       if ((await checkout?.redirect) && isPayPal) {
@@ -110,7 +128,17 @@ export function useCheckout() {
         if (isPayPalWindowClosed) {
           router.push(`/checkout/order-received/${orderId}/?key=${orderKey}&fetch_delay=true`);
         }
-      } else {
+      }
+      else if ((await checkout?.redirect) && isMollie) {
+        let redirectUrl = checkout?.redirect ?? '';
+
+        const isMollieWindowClosed = await openMollieWindow(redirectUrl);
+
+        if (isMollieWindowClosed) {
+          router.push(`/checkout/order-received/${orderId}/?key=${orderKey}&fetch_delay=true`);
+        }
+      }
+      else {
         router.push(`/checkout/order-received/${orderId}/?key=${orderKey}`);
       }
 
