@@ -1,6 +1,8 @@
 import type { CheckoutInput, UpdateCustomerInput, CreateAccountInput } from '#gql';
 import {useContactStore} from "../../../../stores/useContactStore";
 import {useFetch} from "#app";
+const { isChrome } = useDevice();
+
 export function useCheckout() {
   const orderInput = useState<any>('orderInput', () => {
     return {
@@ -53,17 +55,24 @@ export function useCheckout() {
 
   function openMollieWindow(redirectUrl: string): Promise<boolean> {
     return new Promise((resolve) => {
-      const width = 750;
-      const height = 750;
-      const left = window.innerWidth / 2 - width / 2;
-      const top = window.innerHeight / 2 - height / 2 + 80;
-      const mollieWindow = window.open(redirectUrl, '', `width=${width},height=${height},top=${top},left=${left}`);
-      const timer = setInterval(() => {
-        if (mollieWindow?.closed) {
-          clearInterval(timer);
-          resolve(true);
-        }
-      }, 500);
+      if (isChrome) {
+        // Gebruik de pop-up methode voor Chrome
+        const width = 750;
+        const height = 750;
+        const left = window.innerWidth / 2 - width / 2;
+        const top = window.innerHeight / 2 - height / 2 + 80;
+        const mollieWindow = window.open(redirectUrl, '', `width=${width},height=${height},top=${top},left=${left}`);
+        const timer = setInterval(() => {
+          if (mollieWindow?.closed) {
+            clearInterval(timer);
+            resolve(true);
+          }
+        }, 500);
+      } else {
+        // Gebruik de redirect methode voor andere browsers
+        window.location.href = redirectUrl;
+        resolve(true);
+      }
     });
   }
 
