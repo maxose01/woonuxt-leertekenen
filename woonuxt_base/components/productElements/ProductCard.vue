@@ -40,6 +40,7 @@ const imagetoDisplay = computed<string>(() => {
   <div class="relative product-card">
     <NuxtLink :to="`/product/${formatURI(node.slug)}`" :title="node.name">
       <SaleBadge :node="node" class="absolute top-2 right-2" />
+      <FreeGift :node="node" class="absolute top-2 right-2"/>
       <NuxtImg
         v-if="imagetoDisplay"
         :width="imgWidth"
@@ -52,9 +53,9 @@ const imagetoDisplay = computed<string>(() => {
         placeholder-class="blur-xl" />
     </NuxtLink>
     <div class="p-2">
-      <StarRating :rating="node.averageRating" :count="node.reviewCount" />
+      <StarRating v-if="node.reviewCount > 0" :rating="node.averageRating" :count="node.reviewCount" />
       <NuxtLink :to="`/product/${formatURI(node.slug)}`" :title="node.name">
-        <h2 class="mb-2 font-light leading-tight">{{ node.name }}</h2>
+        <h2 class="mb-2 font-light leading-tight font-medium">{{ node.name }}</h2>
       </NuxtLink>
       <ProductPrice class="text-sm" :sale-price="node.salePrice" :regular-price="node.regularPrice" />
     </div>

@@ -22,9 +22,9 @@ const { wooNuxtVersionInfo } = useHelpers();
       <div class="w-3/7 lg:w-auto">
         <div class="mb-1 font-semibold">Products</div>
         <div class="text-sm">
-          <NuxtLink to="/products" class="py-1.5 block">{{ $t('messages.shop.newArrivals') }}</NuxtLink>
-          <NuxtLink to="/products?filter=sale[true]" class="py-1.5 block">On sale</NuxtLink>
-          <NuxtLink to="/products?orderby=rating&order=ASC&filter=rating[1]" class="py-1.5 block">Top rated</NuxtLink>
+          <NuxtLink to="/winkel" class="py-1.5 block">{{ $t('messages.shop.newArrivals') }}</NuxtLink>
+          <NuxtLink to="/winkel?filter=sale[true]" class="py-1.5 block">On sale</NuxtLink>
+          <NuxtLink to="/winkel?orderby=rating&order=ASC&filter=rating[1]" class="py-1.5 block">Top rated</NuxtLink>
           <a href="/" class="py-1.5 block">{{ $t('messages.shop.giftCards') }}</a>
         </div>
       </div>

@@ -21,7 +21,7 @@ export function useProducts() {
     const { isSearchActive, searchProducts } = useSearching();
 
     // scroll to top of page
-    scrollToTop();
+    //scrollToTop();
 
     // return all products if no filters are active
     if (!isFiltersActive.value && !isSearchActive.value && !isSortingActive.value) {
