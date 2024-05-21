@@ -53,9 +53,20 @@ export function useCheckout() {
     });
   }
 
+  const isPopupBlocked = () => {
+    const testPopup = window.open('', '', 'width=100,height=100');
+    if (!testPopup || testPopup.closed || typeof testPopup.closed === 'undefined') {
+      return true; // Pop-ups zijn geblokkeerd
+    } else {
+      testPopup.close();
+      return false; // Pop-ups zijn niet geblokkeerd
+    }
+  };
+
+
   function openMollieWindow(redirectUrl: string): Promise<boolean> {
     return new Promise((resolve) => {
-      if (isChrome) {
+      if (isChrome & !isPopupBlocked) {
         // Gebruik de pop-up methode voor Chrome
         const width = 750;
         const height = 750;
