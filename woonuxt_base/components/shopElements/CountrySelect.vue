@@ -13,9 +13,9 @@ function select(evt) {
 
 <template>
   <select :value="modelValue" @change="select">
-    <option value="" disabled>Select a country</option>
+    <option value="" disabled>{{ $t('countries.select') }}</option>
     <option v-for="country in countriesToShow" :key="country.countryName" :value="country.countryCode">
-      {{ country.countryName }}
+      {{ $t('countries.' + country.countryName) }}
     </option>
   </select>
 </template>
