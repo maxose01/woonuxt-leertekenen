@@ -129,7 +129,7 @@ export function useCheckout() {
       const orderId = checkout?.order?.databaseId;
       const orderKey = checkout?.order?.orderKey;
       const isPayPal = orderInput.value.paymentMethod.id === 'paypal';
-      const isMollie = orderInput.value.paymentMethod.id === 'mollie_wc_gateway_ideal' || orderInput.value.paymentMethod.id === 'mollie_wc_gateway_bancontact' || orderInput.value.paymentMethod.id === 'mollie_wc_gateway_in3';
+      const isMollie = orderInput.value.paymentMethod.id.startsWith('mollie_');
 
       // PayPal redirect
       if ((await checkout?.redirect) && isPayPal) {
