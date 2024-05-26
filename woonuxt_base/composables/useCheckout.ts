@@ -2,6 +2,7 @@ import type { CheckoutInput, UpdateCustomerInput, CreateAccountInput } from '#gq
 import {useContactStore} from "../../../../stores/useContactStore";
 import {useFetch} from "#app";
 const { isChrome } = useDevice();
+import Swal from 'sweetalert2'
 
 export function useCheckout() {
   const orderInput = useState<any>('orderInput', () => {
@@ -114,11 +115,6 @@ export function useCheckout() {
 
       console.log(checkoutPayload);
 
-      // Create account
-      if (orderInput.value.createAccount) {
-        checkoutPayload.account = { username, password } as CreateAccountInput;
-      }
-
       const { checkout } = await GqlCheckout(checkoutPayload);
 
       // Login user if account was created during checkout
@@ -175,7 +171,12 @@ export function useCheckout() {
       const errorMessage = error?.gqlErrors?.[0].message;
 
       if (errorMessage?.includes('An account is already registered with your email address')) {
-        alert('An account is already registered with your email address');
+        Swal.fire({
+          title: 'Oeps!',
+          text: 'Er is al een account met dit e-mail adres. Log alsjeblieft eerst in om door te gaan of gebruik een ander e-mail adres.',
+          icon: 'error',
+          confirmButtonText: 'Login'
+        })
         return null;
       }
 
