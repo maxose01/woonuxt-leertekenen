@@ -2,7 +2,6 @@ import type { CheckoutInput, UpdateCustomerInput, CreateAccountInput } from '#gq
 import {useContactStore} from "../../../../stores/useContactStore";
 import {useFetch} from "#app";
 const { isChrome } = useDevice();
-import Swal from 'sweetalert2'
 
 export function useCheckout() {
   const orderInput = useState<any>('orderInput', () => {
