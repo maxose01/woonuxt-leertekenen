@@ -37,8 +37,7 @@ const goToOrder = (orderNumber) => {
             <td>
               <OrderStatusLabel :status="order.status" />
             </td>
-            <td class="text-right rounded-r-lg">
-              {{ order.total }}
+            <td class="text-right rounded-r-lg"  v-html="order.total">
             </td>
           </tr>
         </tbody>

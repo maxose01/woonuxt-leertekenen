@@ -31,4 +31,8 @@ fragment SimpleProduct on SimpleProduct {
       title
     }
   }
+  inkijkexemplaar {
+    fieldGroupName
+    inkijkexamplaren
+  }
 }

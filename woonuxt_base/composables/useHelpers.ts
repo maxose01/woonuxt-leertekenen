@@ -131,14 +131,14 @@ export function useHelpers() {
    * @param {string} date - The date string to format.
    * @returns {string} The formatted date string.
    */
-  const formatDate = (date: string): string => new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const formatDate = (date: string): string => new Date(date).toLocaleDateString('nl-NL', { month: 'long', day: 'numeric', year: 'numeric' });
 
   /**
    * Formats a price string.
    * @param {string} price - The price string to format.
    * @returns {string} The formatted price string.
    */
-  const formatPrice = (price: string): string => parseFloat(price).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+  const formatPrice = (price: string): string => parseFloat(price).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
 
   /**
    * Scrolls to the top of the page.
