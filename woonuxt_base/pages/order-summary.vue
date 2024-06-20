@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { OrderStatusEnum } from '~/.nuxt/gql/default';
 
-const { query, params, name } = useRoute();
+const { query, params, name, route } = useRoute();
 const { customer } = useAuth();
 const { formatDate, formatPrice } = useHelpers();
 
@@ -16,6 +16,8 @@ const isSummaryPage = computed(() => name === 'order-summary');
 const isCheckoutPage = computed(() => name === 'order-received');
 const showRefreshButton = computed(() => order.value.status !== OrderStatusEnum.COMPLETED);
 const hasDiscount = computed<boolean>(() => !!parseFloat(order.value.discountTotal?.replace(/[^0-9.]/g, '')));
+const orderKey = query.key;
+// const orderId = route.path.match(/\/order-received\/(\d+)/)[1];
 
 onBeforeMount(() => {
   /**
@@ -71,21 +73,33 @@ const refreshOrder = async () => {
           </div>
         </template>
         <template v-else-if="isCheckoutPage">
-          <div class="flex w-full items-center justify-between mb-2">
-            <h1 class="text-xl font-semibold">{{ $t('messages.shop.orderReceived') }}</h1>
-            <button
-              v-if="showRefreshButton"
-              type="button"
-              class="border rounded-md p-2 inline-flex items-center justify-center bg-white"
-              title="Refresh order"
-              aria-label="Refresh order"
-              @click="refreshOrder">
-              <Icon name="ion:refresh-outline" />
-            </button>
-          </div>
-          <p>{{ $t('messages.shop.orderThanks') }}</p>
+          <h2 class="text-xl md:text-2xl font-semibold">Controleer de bestelstatus van jouw bestelling</h2>
+          <p>Het kan zijn dat je ter verificatie het e-mailadres van jouw bestelling moet invullen. Dit doen we om jouw privacy te waarborgen.</p>
+          <br>
+          <p>Heb je al betaald? Dan ontvang je zo snel mogelijk een bestelbevestiging per e-mail</p>
+          <br>
+          <p>Heb je nog niet betaald? Dan kun je hier jouw betaling alsnog voltooien</p>
+          <br>
+          <p>Neem bij vragen gerust contact op met <span><a class="text-primaryPurple underline" href="mailto:info@leertekenen.nl">info@leertekenen.nl</a> </span></p>
+          <br>
+          <hr>
+          <br>
+          <embed class="w-full h-[100vw]" :src="'https://beheer.leertekenen.nl/checkout/order-pay/' + params.orderId + '/?pay_for_order=true&key=' + orderKey + '&utm_nooverride=1'">
+<!--          <div class="flex w-full items-center justify-between mb-2">-->
+<!--            <h1 class="text-xl font-semibold">{{ $t('messages.shop.orderReceived') }}</h1>-->
+<!--            <button-->
+<!--              v-if="showRefreshButton"-->
+<!--              type="button"-->
+<!--              class="border rounded-md p-2 inline-flex items-center justify-center bg-white"-->
+<!--              title="Refresh order"-->
+<!--              aria-label="Refresh order"-->
+<!--              @click="refreshOrder">-->
+<!--              <Icon name="ion:refresh-outline" />-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <p>{{ $t('messages.shop.orderThanks') }}</p>-->
         </template>
-        <hr class="my-8" />
+<!--        <hr class="my-8" />-->
       </div>
       <div v-if="order && !isGuest" class="w-full flex-1">
         <div class="flex justify-between items-center">
@@ -154,10 +168,10 @@ const refreshOrder = async () => {
           </div>
         </div>
       </div>
-      <div v-else-if="errorMessage && errorMessage == 'Not authorized to access this order'" class="w-full text-center flex flex-col items-center justify-center gap-4 flex-1">
-        <Icon name="bxs:party" size="96" class="text-gray-700" />
-        <h1 class="text-xl font-semibold">{{ $t('messages.shop.NotAuthorized') }}</h1>
-      </div>
+<!--      <div v-else-if="errorMessage && errorMessage == 'Not authorized to access this order'" class="w-full text-center flex flex-col items-center justify-center gap-4 flex-1">-->
+<!--        <Icon name="bxs:party" size="96" class="text-gray-700" />-->
+<!--        <h1 class="text-xl font-semibold">{{ $t('messages.shop.NotAuthorized') }}</h1>-->
+<!--      </div>-->
       <div v-else-if="errorMessage && errorMessage != 'Not authorized to access this order'" class="w-full text-center flex flex-col items-center justify-center gap-4 flex-1">
         <Icon name="ion:sad-outline" size="96" class="text-gray-700" />
         <h1 class="text-xl font-semibold">Error</h1>
