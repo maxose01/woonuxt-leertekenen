@@ -72,35 +72,49 @@ const refreshOrder = async () => {
             <h1 class="text-xl font-semibold">{{ $t('messages.shop.orderSummary') }}</h1>
           </div>
         </template>
-        <template v-else-if="isCheckoutPage">
+        <template v-else-if="isCheckoutPage && order.status !== OrderStatusEnum.COMPLETED">
           <h2 class="text-xl md:text-2xl font-semibold">Controleer de bestelstatus van jouw bestelling</h2>
-          <p>Het kan zijn dat je ter verificatie het e-mailadres van jouw bestelling moet invullen. Dit doen we om jouw privacy te waarborgen.</p>
-          <br>
-          <p>Heb je al betaald? Dan ontvang je zo snel mogelijk een bestelbevestiging per e-mail</p>
-          <br>
-          <p>Heb je nog niet betaald? Dan kun je hier jouw betaling alsnog voltooien</p>
-          <br>
-          <p>Neem bij vragen gerust contact op met <span><a class="text-primaryPurple underline" href="mailto:info@leertekenen.nl">info@leertekenen.nl</a> </span></p>
-          <br>
-          <hr>
-          <br>
-          <embed class="w-full h-[100vw]" :src="'https://beheer.leertekenen.nl/checkout/order-pay/' + params.orderId + '/?pay_for_order=true&key=' + orderKey + '&utm_nooverride=1'">
-<!--          <div class="flex w-full items-center justify-between mb-2">-->
-<!--            <h1 class="text-xl font-semibold">{{ $t('messages.shop.orderReceived') }}</h1>-->
-<!--            <button-->
-<!--              v-if="showRefreshButton"-->
-<!--              type="button"-->
-<!--              class="border rounded-md p-2 inline-flex items-center justify-center bg-white"-->
-<!--              title="Refresh order"-->
-<!--              aria-label="Refresh order"-->
-<!--              @click="refreshOrder">-->
-<!--              <Icon name="ion:refresh-outline" />-->
-<!--            </button>-->
-<!--          </div>-->
-<!--          <p>{{ $t('messages.shop.orderThanks') }}</p>-->
+          <em>{{viewer}}</em>
+          <div v-if="!viewer">
+            <p>Het kan zijn dat je ter verificatie het e-mailadres van jouw bestelling moet invullen. Dit doen we om jouw privacy te waarborgen.</p>
+            <br>
+            <p>Heb je al betaald? Dan ontvang je zo snel mogelijk een bestelbevestiging per e-mail</p>
+            <br>
+            <p>Heb je nog niet betaald? Dan kun je hier jouw betaling alsnog voltooien</p>
+            <br>
+            <p>Neem bij vragen gerust contact op met <span><a class="text-primaryPurple underline" href="mailto:info@leertekenen.nl">info@leertekenen.nl</a> </span></p>
+            <br>
+            <hr>
+            <br>
+          </div>
+          <div class="">
+            <a v-if="isGuest" class="btn-primary" :href="'https://beheer.leertekenen.nl/checkout/order-pay/' + params.orderId + '/?pay_for_order=true&key=' + orderKey + '&utm_nooverride=1'">Controleer status</a>
+            <div v-else-if="!isGuest && order.status !== OrderStatusEnum.COMPLETED && order.status !== OrderStatusEnum.CANCELLED">
+              <p>
+                <strong>Status: </strong>
+                We hebben jouw betaling nog niet ontvangen</p><br>
+              <a class="btn-primary" :href="'https://beheer.leertekenen.nl/checkout/order-pay/' + params.orderId + '/?pay_for_order=true&key=' + orderKey + '&utm_nooverride=1'">Betaal alsnog</a>
+            </div>
+          </div>
         </template>
-<!--        <hr class="my-8" />-->
+        <template v-else-if="isCheckoutPage && order && order.status === OrderStatusEnum.COMPLETED">
+          <div class="flex w-full items-center justify-between mb-2">
+            <h1 class="text-xl font-semibold">{{ $t('messages.shop.orderReceived') }}</h1>
+            <button
+              v-if="showRefreshButton"
+              type="button"
+              class="border rounded-md p-2 inline-flex items-center justify-center bg-white"
+              title="Refresh order"
+              aria-label="Refresh order"
+              @click="refreshOrder">
+              <Icon name="ion:refresh-outline" />
+            </button>
+          </div>
+          <p>{{ $t('messages.shop.orderThanks') }}</p>
+          <hr class="my-8" />
+        </template>
       </div>
+      <br>
       <div v-if="order && !isGuest" class="w-full flex-1">
         <div class="flex justify-between items-center">
           <div>
@@ -147,24 +161,31 @@ const refreshOrder = async () => {
         <div>
           <div class="flex justify-between">
             <span>{{ $t('messages.shop.subtotal') }}</span>
-            <span>{{ order.subtotal }}</span>
+            <span v-html="order.subtotal"></span>
           </div>
           <div class="flex justify-between">
             <span>{{ $t('messages.general.tax') }}</span>
-            <span>{{ order.totalTax }}</span>
+            <div>
+              <span v-html="order.totalTax"></span>
+            </div>
+
           </div>
           <div class="flex justify-between">
             <span>{{ $t('messages.general.shipping') }}</span>
-            <span>{{ order.shippingTotal }}</span>
+            <div>
+              <span v-html="order.shippingTotal"></span>
+            </div>
           </div>
           <div v-if="hasDiscount" class="flex justify-between text-primary">
             <span>{{ $t('messages.shop.discount') }}</span>
-            <span>- {{ order.discountTotal }}</span>
+            <div>-
+              <span v-html="order.discountTotal"></span>
+            </div>
           </div>
           <hr class="my-8" />
           <div class="flex justify-between">
             <span class>{{ $t('messages.shop.total') }}</span>
-            <span class="font-semibold">{{ order.total }}</span>
+            <span class="font-semibold" v-html="order.total"></span>
           </div>
         </div>
       </div>
