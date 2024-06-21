@@ -77,12 +77,19 @@ export function useCheckout() {
   function openMollieWindow(redirectUrl: string): Promise<boolean> {
     var windowReference = window.open();
     modalStore.openModal(redirectUrl);
+    // Detect Safari
+    const is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+    const is_safari = navigator.userAgent.indexOf("Safari") > -1;
+
     return new Promise((resolve) => {
       const mollieWindow = window.open(redirectUrl, '_blank');
 
+      // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
       if (!mollieWindow || mollieWindow.closed || typeof mollieWindow.closed === 'undefined') {
-        // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
-        location.href = redirectUrl;
+        if(is_chrome) window.location.href = redirectUrl;
+        else if(is_safari) location.replace(redirectUrl);
+        else location.href = redirectUrl;
+
         resolve(true); // Los de Promise op met de waarde true
       } else {
         // Stel een interval in om te controleren of het venster is gesloten
