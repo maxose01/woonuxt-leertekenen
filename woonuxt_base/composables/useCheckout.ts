@@ -1,8 +1,11 @@
 import type { CheckoutInput, UpdateCustomerInput, CreateAccountInput } from '#gql';
 import {useContactStore} from "../../../../stores/useContactStore";
 import {useFetch} from "#app";
+import {useModalStore} from "../../../../stores/modalStore";
 
 export function useCheckout() {
+  const modalStore = useModalStore();
+
   const orderInput = useState<any>('orderInput', () => {
     return {
       customerNote: '',
@@ -63,23 +66,23 @@ export function useCheckout() {
   };
 
 
-  function openMollieWindow(redirectUrl: string): Promise<boolean> {
-    // window.location.assign(redirectUrl);
-    return new Promise((resolve) => {
-        document.location.href = redirectUrl;
-        resolve(true);
-    });
-  }
+  // function openMollieWindow(redirectUrl: string): Promise<boolean> {
+  //   // window.location.assign(redirectUrl);
+  //   return new Promise((resolve) => {
+  //       modalStore.openModal(redirectUrl);
+  //       //resolve(true);
+  //   });
+  // }
 
   function openMollieWindow(redirectUrl: string): Promise<boolean> {
     var windowReference = window.open();
-
+    modalStore.openModal(redirectUrl);
     return new Promise((resolve) => {
       const mollieWindow = window.open(redirectUrl, '_blank');
 
       if (!mollieWindow || mollieWindow.closed || typeof mollieWindow.closed === 'undefined') {
         // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
-        window.location.assign(redirectUrl);
+        location.href = redirectUrl;
         resolve(true); // Los de Promise op met de waarde true
       } else {
         // Stel een interval in om te controleren of het venster is gesloten
