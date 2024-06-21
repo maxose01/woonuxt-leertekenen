@@ -64,27 +64,36 @@ export function useCheckout() {
 
 
   function openMollieWindow(redirectUrl: string): Promise<boolean> {
+    // window.location.assign(redirectUrl);
     return new Promise((resolve) => {
-      // if (isChrome & !isPopupBlocked) {
-      //   // Gebruik de pop-up methode voor Chrome
-      //   const width = 750;
-      //   const height = 750;
-      //   const left = window.innerWidth / 2 - width / 2;
-      //   const top = window.innerHeight / 2 - height / 2 + 80;
-      //   const mollieWindow = window.open(redirectUrl, '', `width=${width},height=${height},top=${top},left=${left}`);
-      //   const timer = setInterval(() => {
-      //     if (mollieWindow?.closed) {
-      //       clearInterval(timer);
-      //       resolve(true);
-      //     }
-      //   }, 500);
-      // } else {
-        // Gebruik de redirect methode voor andere browsers
-        window.location.href = redirectUrl;
+        document.location.href = redirectUrl;
         resolve(true);
-      // }
     });
   }
+
+  function openMollieWindow(redirectUrl: string): Promise<boolean> {
+    var windowReference = window.open();
+
+    return new Promise((resolve) => {
+      const mollieWindow = window.open(redirectUrl, '_blank');
+
+      if (!mollieWindow || mollieWindow.closed || typeof mollieWindow.closed === 'undefined') {
+        // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
+        window.location.assign(redirectUrl);
+        resolve(true); // Los de Promise op met de waarde true
+      } else {
+        // Stel een interval in om te controleren of het venster is gesloten
+        const checkInterval = setInterval(() => {
+          if (mollieWindow.closed) {
+            clearInterval(checkInterval);
+            resolve(true); // Los de Promise op met de waarde true
+          }
+        }, 500); // Controleer elke 500 milliseconden
+      }
+    });
+  }
+
+
 
   const proccessCheckout = async (isPaid = false) => {
     const { loginUser } = useAuth();
@@ -145,9 +154,9 @@ export function useCheckout() {
       }
       else if ((await checkout?.redirect) && isMollie) {
         let redirectUrl = checkout?.redirect ?? '';
-
+        console.log("redirectUrl = ", redirectUrl);
         const isMollieWindowClosed = await openMollieWindow(redirectUrl);
-
+        //alert(isMollieWindowClosed);
         if (isMollieWindowClosed) {
           router.push(`/checkout/order-received/${orderId}/?key=${orderKey}&fetch_delay=true`);
         }
@@ -166,20 +175,6 @@ export function useCheckout() {
       }
     } catch (error: any) {
       isProcessingOrder.value = false;
-      const errorMessage = error?.gqlErrors?.[0].message;
-
-      if (errorMessage?.includes('An account is already registered with your email address')) {
-        Swal.fire({
-          title: 'Oeps!',
-          text: 'Er is al een account met dit e-mail adres. Log alsjeblieft eerst in om door te gaan of gebruik een ander e-mail adres.',
-          icon: 'error',
-          confirmButtonText: 'Login'
-        })
-        return null;
-      }
-
-      alert(errorMessage + ' ' + error);
-      console.log('errorMessage', errorMessage, orderInput.value.paymentMethod.id);
       return null;
     }
 

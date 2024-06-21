@@ -44,7 +44,7 @@ const salePercentage = computed(() => {
         <div class="flex gap-x-2 gap-y-1 flex-wrap items-center">
           <NuxtLink class="leading-tight" :to="productSlug">{{ productType.name }}</NuxtLink>
           <span v-if="productType.salePrice" class="text-[10px] border-green-200 leading-none bg-green-100 inline-block p-0.5 rounded text-green-600 border"
-            >Save {{ salePercentage }}
+            >{{ $t('shop.save') }} {{ salePercentage }}
           </span>
           <span v-if="isLowStock" class="text-[10px] border-yellow-200 leading-none bg-yellow-100 inline-block p-0.5 rounded text-orange-500 border">Low Stock</span>
         </div>
