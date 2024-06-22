@@ -86,9 +86,10 @@ export function useCheckout() {
 
       // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
       if (!mollieWindow || mollieWindow.closed || typeof mollieWindow.closed === 'undefined') {
-        if(is_chrome) window.location.href = redirectUrl;
-        //else if(is_safari) location.replace(redirectUrl);
-        else location.href = redirectUrl;
+        // if(is_chrome) window.location.href = redirectUrl;
+        // else if(is_safari) location.replace(redirectUrl);
+        // else location.href = redirectUrl;
+        window.location.href = redirectUrl;
 
         resolve(true); // Los de Promise op met de waarde true
       } else {
