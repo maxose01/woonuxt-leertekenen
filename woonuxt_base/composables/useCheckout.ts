@@ -82,42 +82,12 @@ export function useCheckout() {
   }
 
   function openMollieWindow(redirectUrl: string): Promise<boolean> {
-    var windowReference = window.open();
-    modalStore.openModal(redirectUrl);
-    // Detect Safari
-    const is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
-    const is_safari = navigator.userAgent.indexOf("Safari") > -1;
-
     return new Promise((resolve) => {
-      if(isSmartphone())
-      {
-        window.location.href = redirectUrl;
+      window.location.href = redirectUrl;
 
-        const checkInterval = setInterval(() => {
-          resolve(true); // Los de Promise op met de waarde true
-        }, 500);
-      }
-      else
-      {
-        const mollieWindow = window.open(redirectUrl, '_blank');
-
-        // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
-        if (!mollieWindow || mollieWindow.closed || typeof mollieWindow.closed === 'undefined') {
-          window.location.href = redirectUrl;
-
-          const checkInterval = setInterval(() => {
-            resolve(true); // Los de Promise op met de waarde true
-          }, 500);
-        } else {
-          // Stel een interval in om te controleren of het venster is gesloten
-          const checkInterval = setInterval(() => {
-            if (mollieWindow.closed) {
-              clearInterval(checkInterval);
-              resolve(true); // Los de Promise op met de waarde true
-            }
-          }, 500);
-        }
-      }
+      const checkInterval = setInterval(() => {
+        resolve(true); // Los de Promise op met de waarde true
+      }, 500);
     });
   }
 
