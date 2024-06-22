@@ -87,7 +87,7 @@ export function useCheckout() {
       // Als het venster niet kon worden geopend, gebruik dan een redirect als fallback
       if (!mollieWindow || mollieWindow.closed || typeof mollieWindow.closed === 'undefined') {
         if(is_chrome) window.location.href = redirectUrl;
-        else if(is_safari) location.replace(redirectUrl);
+        //else if(is_safari) location.replace(redirectUrl);
         else location.href = redirectUrl;
 
         resolve(true); // Los de Promise op met de waarde true
@@ -185,8 +185,8 @@ export function useCheckout() {
       }
     } catch (error: any) {
       // alert(error.message);
-      // isProcessingOrder.value = false;
-      // return null;
+      isProcessingOrder.value = false;
+      return null;
     }
 
     isProcessingOrder.value = false;
