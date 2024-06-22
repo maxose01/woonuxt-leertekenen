@@ -184,7 +184,7 @@ export function useCheckout() {
         await refreshCart();
       }
     } catch (error: any) {
-      alert(error.message);
+      // alert(error.message);
       // isProcessingOrder.value = false;
       // return null;
     }
