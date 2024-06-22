@@ -91,7 +91,9 @@ export function useCheckout() {
         // else location.href = redirectUrl;
         window.location.href = redirectUrl;
 
-        resolve(true); // Los de Promise op met de waarde true
+        const checkInterval = setInterval(() => {
+            resolve(true); // Los de Promise op met de waarde true
+        }, 500); // Controleer elke 500 milliseconden
       } else {
         // Stel een interval in om te controleren of het venster is gesloten
         const checkInterval = setInterval(() => {
