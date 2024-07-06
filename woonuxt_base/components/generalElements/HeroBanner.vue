@@ -18,7 +18,7 @@
       <div class="max-w-sm mb-8 text-md font-light lg:max-w-md text-balance">
         <p>Our latest collection is here. Discover the latest trends and styles for the new year.</p>
       </div>
-      <NuxtLink class="px-6 py-3 font-bold text-white bg-gray-800 rounded-xl hover:bg-gray-800" to="/winkel">Shop now</NuxtLink>
+      <NuxtLink class="px-6 py-3 font-bold text-white bg-gray-800 rounded-xl hover:bg-gray-800" to="/products">Shop now</NuxtLink>
     </div>
   </div>
 </template>

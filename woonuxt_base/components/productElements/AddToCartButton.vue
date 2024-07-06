@@ -20,6 +20,7 @@ watch(cart, (val) => {
     :class="{ disabled: disabled }"
     :disabled="disabled"
     @click="isLoading = true">
+    <Icon size="24px" name="tdesign:cart-add"></Icon>
     <span>{{ addToCartButtonText }}</span>
     <LoadingIcon v-if="isLoading" stroke="4" size="12" color="#fff" />
   </button>
