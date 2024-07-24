@@ -37,5 +37,4 @@ const twitter = wooNuxtSEO?.find((item) => item.provider === 'twitter') ?? null;
     <Meta name="twitter:url" hid="twitter:url" :content="canonical" />
     <Link rel="canonical" hid="canonical" :href="canonical" />
   </Head>
-  <em>{{info.seo.metaDescription}}</em>
 </template>
