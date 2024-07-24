@@ -131,6 +131,7 @@ interface Product {
   node: SimpleProduct | VariableProduct;
   related?: { nodes: Array<Product> } | null;
   reviews?: Reviews | null;
+  seo?: Array<any> | null;
 }
 
 interface SimpleProduct {

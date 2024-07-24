@@ -12,7 +12,7 @@ const imagePrefix = isDev ? '' : frontEndUrl;
 const imageURL = info.image?.sourceUrl ?? '/images/placeholder.jpg';
 const defaultImage = imagePrefix + img.getSizes(imageURL, { width: 1200, height: 630 }).src;
 const twitterImageSrc = imagePrefix + img.getSizes(imageURL, { width: 1600, height: 900 }).src;
-const description = info.shortDescription || info.description ? stripHtml(info.shortDescription) : stripHtml(info.description);
+const description = info.seo.metaDescription || info.description ? info.seo.metaDescription : stripHtml(info.description);
 
 const facebook = wooNuxtSEO?.find((item) => item.provider === 'facebook') ?? null;
 const twitter = wooNuxtSEO?.find((item) => item.provider === 'twitter') ?? null;
@@ -37,4 +37,5 @@ const twitter = wooNuxtSEO?.find((item) => item.provider === 'twitter') ?? null;
     <Meta name="twitter:url" hid="twitter:url" :content="canonical" />
     <Link rel="canonical" hid="canonical" :href="canonical" />
   </Head>
+  <em>{{info.seo.metaDescription}}</em>
 </template>

@@ -68,5 +68,8 @@ query getProduct($slug: ID!) {
         }
       }
     }
+    seo {
+      metaDescription
+    }
   }
 }
