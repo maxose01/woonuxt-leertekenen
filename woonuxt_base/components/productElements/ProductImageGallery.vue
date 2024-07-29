@@ -19,7 +19,7 @@ const imageToShow = ref(primaryImage.value);
 
 const galleryImages = computed(() => {
   // Add the primary image to the start of the gallery and remove duplicates
-  return [primaryImage.value, ...props.gallery.nodes].filter((img, index, self) => index === self.findIndex((t) => t?.databaseId === img?.databaseId));
+  return [primaryImage.value, ...props.gallery.nodes];
 });
 
 const changeImage = (image: any) => {
@@ -50,9 +50,10 @@ watch(
       fetchpriority="high"
       placeholder
       placeholder-class="blur-xl" />
+
     <div v-if="gallery.nodes.length" class="my-4 gallery-images">
+      <div v-for="galleryImg in galleryImages">
       <NuxtImg
-        v-for="galleryImg in galleryImages"
         :key="galleryImg.databaseId"
         class="cursor-pointer rounded-xl"
         width="640"
@@ -64,6 +65,7 @@ watch(
         placeholder
         placeholder-class="blur-xl"
         loading="lazy" />
+      </div>
     </div>
   </div>
 </template>
